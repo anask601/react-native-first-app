@@ -24,6 +24,12 @@ export default function App() {
     ]);
   };
 
+  const deleteHandler = (goalId) => {
+    setCurrentGoal((currentGoal) =>
+      currentGoal.filter((goal) => goal.id !== goalId)
+    );
+  };
+
   const styles = StyleSheet.create({
     screen: {
       padding: 50,
@@ -43,7 +49,11 @@ export default function App() {
         keyExtractor={(item, index) => item.id}
         data={currentGoal}
         renderItem={(itemData) => (
-          <GoalItems styles={styles.listItems} title={itemData.item.value} />
+          <GoalItems
+            styles={styles.listItems}
+            title={itemData.item.value}
+            onDelete={() => deleteHandler(itemData.item.id)}
+          />
         )}
       />
     </View>
