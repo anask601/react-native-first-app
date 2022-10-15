@@ -6,6 +6,7 @@ import {
   View,
   Button,
   ScrollView,
+  FlatList,
 } from "react-native";
 
 export default function App() {
@@ -16,7 +17,13 @@ export default function App() {
   };
 
   const valueHandler = () => {
-    setCurrentGoal((currentGoal) => [...currentGoal, enteredText]);
+    setCurrentGoal((currentGoal) => [
+      ...currentGoal,
+      {
+        id: Math.random().toString(),
+        value: enteredText,
+      },
+    ]);
   };
 
   const styles = StyleSheet.create({
@@ -51,13 +58,15 @@ export default function App() {
         />
         <Button title="ADD" onPress={valueHandler}></Button>
       </View>
-      <ScrollView>
-        {currentGoal.map((goal) => (
-          <View style={styles.listItems} key={Math.random()}>
-            <Text>{goal}</Text>
+      <FlatList
+        keyExtractor={(item, index) => item.id}
+        data={currentGoal}
+        renderItem={(itemData) => (
+          <View style={styles.listItems}>
+            <Text>{itemData.item.value}</Text>
           </View>
-        ))}
-      </ScrollView>
+        )}
+      />
     </View>
   );
 }
