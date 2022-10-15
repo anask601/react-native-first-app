@@ -1,7 +1,33 @@
-import { StatusBar } from "expo-status-bar";
-import { StyleSheet, TextInput, Text, View, Button } from "react-native";
+import { useState } from "react";
+import {
+  StyleSheet,
+  TextInput,
+  Text,
+  View,
+  Button,
+  ScrollView,
+} from "react-native";
 
 export default function App() {
+  const [enteredText, setEnteredText] = useState("");
+  const [currentGoal, setCurrentGoal] = useState([]);
+  const inputGoalHandler = (enteredValue) => {
+    setEnteredText(enteredValue);
+  };
+
+  const valueHandler = () => {
+    setCurrentGoal((currentGoal) => [...currentGoal, enteredText]);
+  };
+
+  const styles = StyleSheet.create({
+    listItems: {
+      padding: 10,
+      marginVertical: 10,
+      backgroundColor: "#ccc",
+      borderColor: "#333",
+      borderWidth: 1,
+    },
+  });
   return (
     <View style={{ padding: 50 }}>
       <View
@@ -17,13 +43,21 @@ export default function App() {
             width: "80%",
             borderColor: "#333",
             borderWidth: 1,
-            padding: 3,
+            padding: 1,
             marginBottom: 1,
           }}
+          onChangeText={inputGoalHandler}
+          value={enteredText}
         />
-        <Button title="ADD"></Button>
+        <Button title="ADD" onPress={valueHandler}></Button>
       </View>
-      <View></View>
+      <ScrollView>
+        {currentGoal.map((goal) => (
+          <View style={styles.listItems} key={Math.random()}>
+            <Text>{goal}</Text>
+          </View>
+        ))}
+      </ScrollView>
     </View>
   );
 }
