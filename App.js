@@ -8,15 +8,13 @@ import {
   ScrollView,
   FlatList,
 } from "react-native";
+import GoalInputs from "./components/GoalInputs";
+import GoalItems from "./components/GoalItems";
 
 export default function App() {
-  const [enteredText, setEnteredText] = useState("");
   const [currentGoal, setCurrentGoal] = useState([]);
-  const inputGoalHandler = (enteredValue) => {
-    setEnteredText(enteredValue);
-  };
 
-  const valueHandler = () => {
+  const valueHandler = (enteredText) => {
     setCurrentGoal((currentGoal) => [
       ...currentGoal,
       {
@@ -27,6 +25,9 @@ export default function App() {
   };
 
   const styles = StyleSheet.create({
+    screen: {
+      padding: 50,
+    },
     listItems: {
       padding: 10,
       marginVertical: 10,
@@ -36,35 +37,13 @@ export default function App() {
     },
   });
   return (
-    <View style={{ padding: 50 }}>
-      <View
-        style={{
-          flexDirection: "row",
-          justifyContent: "space-between",
-          alignItems: "center",
-        }}
-      >
-        <TextInput
-          placeholder="Add Your Goals 💪"
-          style={{
-            width: "80%",
-            borderColor: "#333",
-            borderWidth: 1,
-            padding: 1,
-            marginBottom: 1,
-          }}
-          onChangeText={inputGoalHandler}
-          value={enteredText}
-        />
-        <Button title="ADD" onPress={valueHandler}></Button>
-      </View>
+    <View style={styles.screen}>
+      <GoalInputs onAddBtn={valueHandler} />
       <FlatList
         keyExtractor={(item, index) => item.id}
         data={currentGoal}
         renderItem={(itemData) => (
-          <View style={styles.listItems}>
-            <Text>{itemData.item.value}</Text>
-          </View>
+          <GoalItems styles={styles.listItems} title={itemData.item.value} />
         )}
       />
     </View>
