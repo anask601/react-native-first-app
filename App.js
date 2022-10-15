@@ -13,6 +13,7 @@ import GoalItems from "./components/GoalItems";
 
 export default function App() {
   const [currentGoal, setCurrentGoal] = useState([]);
+  const [isAddModal, setIsAddModal] = useState(false);
 
   const valueHandler = (enteredText) => {
     setCurrentGoal((currentGoal) => [
@@ -22,6 +23,7 @@ export default function App() {
         value: enteredText,
       },
     ]);
+    setIsAddModal(false);
   };
 
   const deleteHandler = (goalId) => {
@@ -30,6 +32,9 @@ export default function App() {
     );
   };
 
+  const onCancelHandler = () => {
+    setIsAddModal(false);
+  };
   const styles = StyleSheet.create({
     screen: {
       padding: 50,
@@ -44,7 +49,12 @@ export default function App() {
   });
   return (
     <View style={styles.screen}>
-      <GoalInputs onAddBtn={valueHandler} />
+      <Button title="Add new Goals 🚀" onPress={() => setIsAddModal(true)} />
+      <GoalInputs
+        onAddBtn={valueHandler}
+        visible={isAddModal}
+        onCancel={onCancelHandler}
+      />
       <FlatList
         keyExtractor={(item, index) => item.id}
         data={currentGoal}
